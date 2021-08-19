@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "701310454515",
+    "project_id": "fishnet-3dd83",
+    "storage_bucket": "fishnet-3dd83.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:701310454515:android:5b230d1edee6d57597c586",
+        "android_client_info": {
+          "package_name": "com.example.fishnet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "701310454515-nm428i6jprdvdk77aeogncctnaek3qpm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwQiCE_ulVSQUbOCcGELSVfzOHlMAFupw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "701310454515-nm428i6jprdvdk77aeogncctnaek3qpm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

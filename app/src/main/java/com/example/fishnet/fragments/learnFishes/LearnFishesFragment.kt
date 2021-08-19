@@ -31,9 +31,6 @@ class LearnFishesFragment : Fragment() {
     }
 
     private fun setupRecyclerView(){
-
-
-
         binding?.learnFishesRecyclerView?.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL, false)
         binding?.learnFishesRecyclerView?.adapter = FishLearnRvAdapter()
 
