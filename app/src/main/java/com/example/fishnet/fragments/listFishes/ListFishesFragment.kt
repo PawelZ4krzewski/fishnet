@@ -5,6 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fishnet.R
 import com.example.fishnet.adapters.FishesRvAdapter
@@ -26,6 +29,10 @@ class FishesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding?.learnButton?.setOnClickListener() {
+            findNavController().navigate(R.id.action_fishesFragment_to_learnFishFragment)
+        }
 
         setupRecyclerView()
     }

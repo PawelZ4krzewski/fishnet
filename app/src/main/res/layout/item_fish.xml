@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fishItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
@@ -13,27 +14,58 @@
         android:weightSum="100"
         android:layout_marginTop="8dp">
 
-    <TextView
-        android:id="@+id/termTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text = "Term"
-        android:textSize="16sp"
-        android:layout_weight="50"
-        android:textAlignment="center"
-        />
+        <TextView
+            android:id="@+id/termTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text = "Term"
+            android:textSize="16sp"
+            android:layout_weight="50"
+            android:textAlignment="center"
+            />
 
-    <TextView
-        android:id="@+id/definitionTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text = "definition"
-        android:textSize="16sp"
-        android:layout_weight="50"
-        android:textAlignment="center"
-        />
+        <TextView
+            android:id="@+id/definitionTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text = "definition"
+            android:textSize="16sp"
+            android:layout_weight="50"
+            android:textAlignment="center"
+            />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/fishesImages"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="100"
+        android:layout_marginTop="8dp">
+
+        <ImageView
+            android:id="@+id/termImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text = "Term"
+            android:textSize="16sp"
+            android:layout_weight="50"
+            android:textAlignment="center"
+            android:contentDescription="termImage"
+            android:src="@drawable/ic_launcher_foreground"/>
+
+        <ImageView
+            android:id="@+id/definitionImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text = "Term"
+            android:textSize="16sp"
+            android:layout_weight="50"
+            android:textAlignment="center"
+            android:contentDescription="definitionImage"
+            android:src="@drawable/ic_launcher_foreground"
+            />
+    </androidx.appcompat.widget.LinearLayoutCompat>
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"

@@ -9,5 +9,14 @@
         android:id="@+id/fishesFragment"
         android:name="com.example.fishnet.fragments.FishesFragment"
         android:label="FishesFragment"
-        tools:layout="@layout/fragment_fishes"/>
+        tools:layout="@layout/fragment_fishes">
+        <action
+            android:id="@+id/action_fishesFragment_to_learnFishFragment"
+            app:destination="@id/learnFishFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/learnFishFragment"
+        android:name="com.example.fishnet.fragments.learnFishes.LearnFishesFragment"
+        android:label="fragment_learn_fish"
+        tools:layout="@layout/fragment_learn_fishes" />
 </navigation>
