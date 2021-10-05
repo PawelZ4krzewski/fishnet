@@ -3,7 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav_graph"
-    app:startDestination="@id/fishesFragment">
+    app:startDestination="@id/listGroupFishFragment">
+    <fragment
+        android:id="@+id/listGroupFishFragment"
+        android:name="com.example.fishnet.fragments.listGroupFish.ListGroupFishFragment"
+        android:label="FishGroupFragment"
+        tools:layout="@layout/fragment_list_group_fish">
+        <action
+            android:id="@+id/action_fishGroupFragment_to_fishesFragment"
+            app:destination="@id/fishesFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/fishesFragment"
@@ -13,10 +22,14 @@
         <action
             android:id="@+id/action_fishesFragment_to_learnFishFragment"
             app:destination="@id/learnFishFragment" />
+        <argument
+            android:name="groupId"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/learnFishFragment"
         android:name="com.example.fishnet.fragments.learnFishes.LearnFishesFragment"
         android:label="fragment_learn_fish"
         tools:layout="@layout/fragment_learn_fishes" />
+
 </navigation>

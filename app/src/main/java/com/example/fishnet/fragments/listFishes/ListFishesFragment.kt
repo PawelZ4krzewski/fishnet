@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fishnet.R
 import com.example.fishnet.adapters.FishesRvAdapter
@@ -17,31 +18,40 @@ import com.example.fishnet.data.FlashCardData
 import com.example.fishnet.data.UserData
 import com.example.fishnet.databinding.FragmentFishesBinding
 import com.example.fishnet.fragments.listFishes.ListFishesViewModel
+import com.example.fishnet.fragments.listFishes.ListFishesViewModelFactory
 
 class FishesFragment : Fragment() {
 
     private val FC_DEBUG = "FC_DEBUG"
 
-    private var binding:FragmentFishesBinding? = null
-    private val listFishesVM by viewModels<ListFishesViewModel>()
+    private val args: FishesFragmentArgs by navArgs()
+
+    private var _binding:FragmentFishesBinding? = null
+    private val binding
+        get() = _binding!!
+
+    private val listFishesVM:ListFishesViewModel by viewModels{ ListFishesViewModelFactory(args.groupId) }
+
+    private val adapter =  FishesRvAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentFishesBinding.inflate(inflater, container, false)
-        return binding?.root
+    ): View {
+        _binding = FragmentFishesBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding?.learnButton?.setOnClickListener() {
+        binding.learnButton.setOnClickListener() {
             findNavController().navigate(R.id.action_fishesFragment_to_learnFishFragment)
         }
-
+        Log.d("LF_DEBUG","Group Id "+args.groupId.toString())
+        Log.d("LF_DEBUG","Przed setupRecycler View")
         setupRecyclerView()
     }
 
@@ -58,13 +68,10 @@ class FishesFragment : Fragment() {
 
 
     private fun setupRecyclerView(){
-        val adapter =  FishesRvAdapter()
-        binding?.fishesRecyclerView?.layoutManager = LinearLayoutManager(requireContext())
-        binding?.fishesRecyclerView?.adapter = adapter
+        binding.fishesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.fishesRecyclerView.adapter = adapter
         listFishesVM.flashCardList.observe(viewLifecycleOwner,{
             adapter.setFlashCards(it)
         })
-
-
     }
 }

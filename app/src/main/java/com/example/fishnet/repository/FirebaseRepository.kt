@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.fishnet.data.FlashCardData
 import com.example.fishnet.data.UserData
+import com.example.fishnet.data.cardGroupData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -36,16 +37,35 @@ class FirebaseRepository {
         return cloudResult
     }
 
-    fun getFlashCardsData() :LiveData<List<FlashCardData>>
+    fun getFlashCardsData(groupId: String) :LiveData<List<FlashCardData>>
     {
         val cloudResult = MutableLiveData<List<FlashCardData>>()
         cloud.collection("flashCard")
+            .whereEqualTo("groupId",groupId)
             .get()
             .addOnSuccessListener {
                 Log.d(REPO_DEBUG, it.toString())
                 val flashCard = it.toObjects(FlashCardData::class.java)
                 Log.d(REPO_DEBUG, flashCard.toString())
                 cloudResult.postValue(flashCard)
+            }
+            .addOnFailureListener {
+                Log.d(REPO_DEBUG, it.message.toString())
+            }
+        return cloudResult
+    }
+
+    fun getCardGroupData(list: List<String>) :LiveData<List<cardGroupData>>
+    {
+        val cloudResult = MutableLiveData<List<cardGroupData>>()
+        cloud.collection("cardGroup")
+            .whereIn("groupId",list)
+            .get()
+            .addOnSuccessListener {
+                Log.d(REPO_DEBUG, it.toString())
+                val cardGroup = it.toObjects(cardGroupData::class.java)
+                Log.d(REPO_DEBUG, cardGroup.toString())
+                cloudResult.postValue(cardGroup)
             }
             .addOnFailureListener {
                 Log.d(REPO_DEBUG, it.message.toString())
