@@ -19,6 +19,7 @@ import com.example.fishnet.data.UserData
 import com.example.fishnet.databinding.FragmentFishesBinding
 import com.example.fishnet.fragments.listFishes.ListFishesViewModel
 import com.example.fishnet.fragments.listFishes.ListFishesViewModelFactory
+import com.example.fishnet.fragments.listGroupFish.ListGroupFishFragmentDirections
 
 class FishesFragment : Fragment() {
 
@@ -48,7 +49,8 @@ class FishesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.learnButton.setOnClickListener() {
-            findNavController().navigate(R.id.action_fishesFragment_to_learnFishFragment)
+            val action = FishesFragmentDirections.actionFishesFragmentToLearnFishFragment(args.groupId)
+            findNavController().navigate(action)
         }
         Log.d("LF_DEBUG","Group Id "+args.groupId.toString())
         Log.d("LF_DEBUG","Przed setupRecycler View")

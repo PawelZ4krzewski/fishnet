@@ -11,5 +11,4 @@ class ListFishesViewModel(private val groupId: String) : ViewModel() {
     val flashCardList = repository.getFlashCardsData(groupId)
     val user = repository.getUserData()
 
-
 }

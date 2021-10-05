@@ -44,6 +44,12 @@ class ListGroupFishFragment : Fragment(), FishGroupRvAdapter.OnCardGroupItemLong
     private fun setupRecyclerView(){
         binding.cardGroupRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.cardGroupRecyclerView.adapter = adapter
+
+        listGroupFishVM.user.observe(viewLifecycleOwner,{
+            Log.d("LGF_DEBUG","user: "+it.toString())
+
+        })
+
         Log.d("LGF_DEBUG","W  setupRecycler View")
 
         listGroupFishVM.cardGroup.observe(viewLifecycleOwner,{

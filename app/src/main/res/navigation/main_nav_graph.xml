@@ -30,6 +30,8 @@
         android:id="@+id/learnFishFragment"
         android:name="com.example.fishnet.fragments.learnFishes.LearnFishesFragment"
         android:label="fragment_learn_fish"
-        tools:layout="@layout/fragment_learn_fishes" />
+        tools:layout="@layout/fragment_learn_fishes" >
+        <argument android:name="groupId" />
+    </fragment>
 
 </navigation>

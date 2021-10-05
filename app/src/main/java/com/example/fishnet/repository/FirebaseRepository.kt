@@ -55,21 +55,24 @@ class FirebaseRepository {
         return cloudResult
     }
 
-    fun getCardGroupData(list: List<String>) :LiveData<List<cardGroupData>>
+    fun getCardGroupData(list: List<String>?) :LiveData<List<cardGroupData>>
     {
         val cloudResult = MutableLiveData<List<cardGroupData>>()
-        cloud.collection("cardGroup")
-            .whereIn("groupId",list)
-            .get()
-            .addOnSuccessListener {
-                Log.d(REPO_DEBUG, it.toString())
-                val cardGroup = it.toObjects(cardGroupData::class.java)
-                Log.d(REPO_DEBUG, cardGroup.toString())
-                cloudResult.postValue(cardGroup)
-            }
-            .addOnFailureListener {
-                Log.d(REPO_DEBUG, it.message.toString())
-            }
+
+        if(!list.isNullOrEmpty()) {
+            cloud.collection("cardGroup")
+                .whereIn("groupId", list)
+                .get()
+                .addOnSuccessListener {
+                    Log.d(REPO_DEBUG, it.toString())
+                    val cardGroup = it.toObjects(cardGroupData::class.java)
+                    Log.d(REPO_DEBUG, cardGroup.toString())
+                    cloudResult.postValue(cardGroup)
+                }
+                .addOnFailureListener {
+                    Log.d(REPO_DEBUG, it.message.toString())
+                }
+        }
         return cloudResult
     }
 }
