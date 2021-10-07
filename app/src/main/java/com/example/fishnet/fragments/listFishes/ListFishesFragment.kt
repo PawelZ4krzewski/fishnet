@@ -64,6 +64,10 @@ class FishesFragment : Fragment() {
         })
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
     private fun bindUserData(user : UserData) {
         Log.d(FC_DEBUG, user.toString())
     }

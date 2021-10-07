@@ -15,6 +15,7 @@ import com.example.fishnet.adapters.FishesRvAdapter
 import com.example.fishnet.data.cardGroupData
 import com.example.fishnet.databinding.FragmentListGroupFishBinding
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.FirebaseAuth
 
 class ListGroupFishFragment : Fragment(), FishGroupRvAdapter.OnCardGroupItemLongClick {
 
@@ -22,6 +23,7 @@ class ListGroupFishFragment : Fragment(), FishGroupRvAdapter.OnCardGroupItemLong
     private var _binding: FragmentListGroupFishBinding? = null
     private val binding
             get() = _binding!!
+    private val auth = FirebaseAuth.getInstance()
     private val listGroupFishVM by viewModels<ListGroupFishViewModel>()
     private val adapter =  FishGroupRvAdapter(this)
 
@@ -39,8 +41,20 @@ class ListGroupFishFragment : Fragment(), FishGroupRvAdapter.OnCardGroupItemLong
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d("LGF_DEBUG","Przed setupRecycler View")
+
+        binding.logoutButton.setOnClickListener{
+            auth.signOut()
+            requireActivity().finish()
+        }
+
         setupRecyclerView()
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun setupRecyclerView(){
         binding.cardGroupRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.cardGroupRecyclerView.adapter = adapter
@@ -62,4 +76,6 @@ class ListGroupFishFragment : Fragment(), FishGroupRvAdapter.OnCardGroupItemLong
         val action = ListGroupFishFragmentDirections.actionFishGroupFragmentToFishesFragment(cardGroup.groupId!!)
         findNavController().navigate(action)
     }
+
+
 }

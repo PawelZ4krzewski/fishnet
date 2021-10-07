@@ -19,8 +19,13 @@ class FirebaseRepository {
     private val cloud = FirebaseFirestore.getInstance()
 
 
-    fun getUserData(): LiveData<UserData>
-    {
+    fun createNewUser(user: UserData){
+        cloud.collection("user")
+            .document(user.userId!!)
+            .set(user)
+    }
+
+    fun getUserData(): LiveData<UserData> {
         val cloudResult = MutableLiveData<UserData>()
         val userId = auth.currentUser?.uid
 
@@ -37,8 +42,7 @@ class FirebaseRepository {
         return cloudResult
     }
 
-    fun getFlashCardsData(groupId: String) :LiveData<List<FlashCardData>>
-    {
+    fun getFlashCardsData(groupId: String) :LiveData<List<FlashCardData>> {
         val cloudResult = MutableLiveData<List<FlashCardData>>()
         cloud.collection("flashCard")
             .whereEqualTo("groupId",groupId)
@@ -55,8 +59,7 @@ class FirebaseRepository {
         return cloudResult
     }
 
-    fun getCardGroupData(list: List<String>?) :LiveData<List<cardGroupData>>
-    {
+    fun getCardGroupData(list: List<String>?) :LiveData<List<cardGroupData>> {
         val cloudResult = MutableLiveData<List<cardGroupData>>()
 
         if(!list.isNullOrEmpty()) {
