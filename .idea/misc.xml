@@ -14,11 +14,12 @@
         <entry key="..\:/Users/Pawel/Documents/GitHub/fishnet/app/src/main/res/layout/fragment_add_flash_card.xml" value="0.10964912280701754" />
         <entry key="..\:/Users/Pawel/Documents/GitHub/fishnet/app/src/main/res/layout/fragment_add_group.xml" value="0.264" />
         <entry key="..\:/Users/Pawel/Documents/GitHub/fishnet/app/src/main/res/layout/fragment_fishes.xml" value="0.1621271076523995" />
+        <entry key="..\:/Users/Pawel/Documents/GitHub/fishnet/app/src/main/res/layout/fragment_learn_fishes.xml" value="0.13421052631578947" />
         <entry key="..\:/Users/Pawel/Documents/GitHub/fishnet/app/src/main/res/layout/fragment_list_group_fish.xml" value="0.264" />
         <entry key="..\:/Users/Pawel/Documents/GitHub/fishnet/app/src/main/res/layout/fragment_profile.xml" value="0.152" />
         <entry key="..\:/Users/Pawel/Documents/GitHub/fishnet/app/src/main/res/layout/item_fish.xml" value="0.6694078947368421" />
         <entry key="..\:/Users/Pawel/Documents/GitHub/fishnet/app/src/main/res/layout/item_fish_group.xml" value="0.6694078947368421" />
-        <entry key="..\:/Users/Pawel/Documents/GitHub/fishnet/app/src/main/res/layout/item_learn_fish.xml" value="0.6694078947368421" />
+        <entry key="..\:/Users/Pawel/Documents/GitHub/fishnet/app/src/main/res/layout/item_learn_fish.xml" value="0.176" />
       </map>
     </option>
   </component>

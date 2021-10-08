@@ -34,16 +34,6 @@ class FishLearnRvAdapter: RecyclerView.Adapter<FishLearnRvAdapter.MyViewHolder>(
         val flashCard = flashCards[position]
         holder.termTextView.text = flashCard.question
         holder.definitionTextView.text = flashCard.answer
-        holder.itemView.setOnClickListener(){
-            if(holder.termTextView.visibility == View.INVISIBLE) {
-                holder.termTextView.visibility = View.VISIBLE
-                holder.definitionTextView.visibility = View.INVISIBLE
-            }
-            else{
-                holder.termTextView.visibility = View.INVISIBLE
-                holder.definitionTextView.visibility = View.VISIBLE
-            }
-        }
     }
 
     override fun getItemCount() = flashCards.size
