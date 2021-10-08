@@ -52,6 +52,12 @@ class FishesFragment : Fragment() {
             val action = FishesFragmentDirections.actionFishesFragmentToLearnFishFragment(args.groupId)
             findNavController().navigate(action)
         }
+
+        binding.addFlashCardButton.setOnClickListener() {
+            val action = FishesFragmentDirections.actionFishesFragmentToAddFlashCardFragment(args.groupId)
+            findNavController().navigate(action)
+        }
+
         Log.d("LF_DEBUG","Group Id "+args.groupId.toString())
         Log.d("LF_DEBUG","Przed setupRecycler View")
         setupRecyclerView()
@@ -77,7 +83,10 @@ class FishesFragment : Fragment() {
         binding.fishesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.fishesRecyclerView.adapter = adapter
         listFishesVM.flashCardList.observe(viewLifecycleOwner,{
-            adapter.setFlashCards(it)
+            it?.let {
+                adapter.setFlashCards(it)
+            }
+
         })
     }
 }

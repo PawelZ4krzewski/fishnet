@@ -47,6 +47,14 @@ class ListGroupFishFragment : Fragment(), FishGroupRvAdapter.OnCardGroupItemLong
             requireActivity().finish()
         }
 
+        binding.userInformationButton.setOnClickListener{
+            findNavController().navigate(ListGroupFishFragmentDirections.actionListGroupFishFragmentToProfileFragment())
+        }
+
+        binding.addGroupButton.setOnClickListener{
+            findNavController().navigate(ListGroupFishFragmentDirections.actionListGroupFishFragmentToAddGroupFragment())
+        }
+
         setupRecyclerView()
     }
 
@@ -67,8 +75,9 @@ class ListGroupFishFragment : Fragment(), FishGroupRvAdapter.OnCardGroupItemLong
         Log.d("LGF_DEBUG","W  setupRecycler View")
 
         listGroupFishVM.cardGroup.observe(viewLifecycleOwner,{
-            Log.d("LGF_DEBUG",it.toString())
-            adapter.setCardGroup(it)
+            it?.let{
+                adapter.setCardGroup(it)
+            }
         })
     }
 

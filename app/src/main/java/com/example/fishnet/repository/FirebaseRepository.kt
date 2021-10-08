@@ -7,6 +7,7 @@ import com.example.fishnet.data.FlashCardData
 import com.example.fishnet.data.UserData
 import com.example.fishnet.data.cardGroupData
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 
@@ -28,6 +29,23 @@ class FirebaseRepository {
     fun getUserData(): LiveData<UserData> {
         val cloudResult = MutableLiveData<UserData>()
         val userId = auth.currentUser?.uid
+
+        cloud.collection("user")
+            .document(userId!!)
+            .get()
+            .addOnSuccessListener {
+                val user = it.toObject(UserData::class.java)
+                cloudResult.postValue(user)
+            }
+            .addOnFailureListener {
+                Log.d(REPO_DEBUG, it.message.toString())
+            }
+        return cloudResult
+    }
+
+    fun getUserData(userId: String): LiveData<UserData> {
+        val cloudResult = MutableLiveData<UserData>()
+        val userId = userId
 
         cloud.collection("user")
             .document(userId!!)
@@ -77,5 +95,39 @@ class FirebaseRepository {
                 }
         }
         return cloudResult
+    }
+
+    fun addUserGroup(groupId: String){
+        cloud.collection("user")
+            .document(auth.currentUser?.uid!!)
+            .update("cardGroupsId",FieldValue.arrayUnion(groupId))
+            .addOnSuccessListener {
+                Log.d(REPO_DEBUG,"Dodano grupe do uzytkownika")
+            }.addOnFailureListener {
+                Log.d(REPO_DEBUG, it.message.toString())
+            }
+    }
+    fun createCardGroup(cardGroup: cardGroupData) {
+        cloud.collection("cardGroup")
+            .add(cardGroup)
+            .addOnSuccessListener {
+                it.update("groupId",it.id)
+                addUserGroup(it.id)
+                Log.d(REPO_DEBUG,"Utworzono grupe")
+            }.addOnFailureListener {
+                Log.d(REPO_DEBUG, it.message.toString())
+            }
+    }
+
+    fun createFlashCard(flashCard: FlashCardData){
+        cloud.collection("flashCard")
+            .add(flashCard)
+            .addOnSuccessListener {
+                it.update("cardId",it.id)
+                addUserGroup(it.id)
+                Log.d(REPO_DEBUG,"Utworzono flashCard")
+            }.addOnFailureListener {
+                Log.d(REPO_DEBUG, it.message.toString())
+            }
     }
 }

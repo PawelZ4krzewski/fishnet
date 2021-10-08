@@ -12,6 +12,12 @@
         <action
             android:id="@+id/action_fishGroupFragment_to_fishesFragment"
             app:destination="@id/fishesFragment" />
+        <action
+            android:id="@+id/action_listGroupFishFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_listGroupFishFragment_to_addGroupFragment"
+            app:destination="@id/addGroupFragment" />
     </fragment>
 
     <fragment
@@ -25,6 +31,9 @@
         <argument
             android:name="groupId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_fishesFragment_to_addFlashCardFragment"
+            app:destination="@id/addFlashCardFragment" />
     </fragment>
     <fragment
         android:id="@+id/learnFishFragment"
@@ -32,6 +41,32 @@
         android:label="fragment_learn_fish"
         tools:layout="@layout/fragment_learn_fishes" >
         <argument android:name="groupId" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.fishnet.fragments.profile.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/addGroupFragment"
+        android:name="com.example.fishnet.fragments.addGroup.AddGroupFragment"
+        android:label="fragment_add_group"
+        tools:layout="@layout/fragment_add_group" >
+        <action
+            android:id="@+id/action_addGroupFragment_to_listGroupFishFragment"
+            app:destination="@id/listGroupFishFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addFlashCardFragment"
+        android:name="com.example.fishnet.fragments.addFlashCard.AddFlashCardFragment"
+        android:label="AddFlashCardFragment"
+        tools:layout="@layout/fragment_add_flash_card">
+        <argument
+            android:name="groupId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_addFlashCardFragment_to_fishesFragment"
+            app:destination="@id/fishesFragment" />
     </fragment>
 
 </navigation>
