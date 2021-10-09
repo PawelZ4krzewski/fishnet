@@ -1,5 +1,6 @@
 package com.example.fishnet.fragments.learnFishes
 
+import android.animation.AnimatorSet
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -33,6 +34,10 @@ class LearnFishesFragment : Fragment(), CardStackListener{
 
     private val learnFishesVM: LearnFishesViewModel by viewModels{ LearnFishesViewModelFactory(args.groupId) }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -96,6 +101,6 @@ class LearnFishesFragment : Fragment(), CardStackListener{
             adapter.setFlashCards(it)
         })
 //        val snapHelper = LinearSnapHelper().attachToRecyclerView(binding.learnFishesRecyclerView)
-
     }
+
 }

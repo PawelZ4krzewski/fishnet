@@ -1,5 +1,6 @@
 package com.example.fishnet.adapters
 
+import android.animation.AnimatorSet
 import android.app.ActionBar
 import android.content.ContentValues.TAG
 import android.text.Layout
@@ -15,7 +16,8 @@ import com.example.fishnet.data.cardGroupData
 
 class FishGroupRvAdapter(private val listener: OnCardGroupItemLongClick) : RecyclerView.Adapter<FishGroupRvAdapter.MyViewHolder>() {
 
-    val cardGroups = ArrayList<cardGroupData>()
+    private val cardGroups = ArrayList<cardGroupData>()
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_fish_group, parent, false)
