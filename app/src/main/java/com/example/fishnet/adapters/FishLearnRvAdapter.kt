@@ -10,26 +10,21 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.animation.doOnEnd
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.view.isGone
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fishnet.R
-import com.example.fishnet.data.FishData
+import com.example.fishnet.data.CardGroupData
 import com.example.fishnet.data.FlashCardData
+import com.example.fishnet.fragments.learnFishes.LearnFishesFragment
 
-class FishLearnRvAdapter: RecyclerView.Adapter<FishLearnRvAdapter.MyViewHolder>() {
+class FishLearnRvAdapter(): RecyclerView.Adapter<FishLearnRvAdapter.MyViewHolder>() {
 
     val flashCards = ArrayList<FlashCardData>()
-    private lateinit var flip_in: AnimatorSet
-    private lateinit var flip_out: AnimatorSet
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): MyViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_learn_fish, parent , false)
-
         return MyViewHolder(view)
     }
 
@@ -42,45 +37,35 @@ class FishLearnRvAdapter: RecyclerView.Adapter<FishLearnRvAdapter.MyViewHolder>(
     }
 
     override fun onBindViewHolder(holder: FishLearnRvAdapter.MyViewHolder, position: Int) {
+
         val flashCard = flashCards[position]
         holder.termTextView.text = flashCard.question
         holder.definitionTextView.text = flashCard.answer
         holder.flashCardLayout.setOnClickListener {
             val isQuestion = holder.termTextView.visibility
-            Log.d("FRV_DEBUG", "Czy jest visible termTextView "+isQuestion.toString())
             if (isQuestion == 8) {
-                Log.d("FRV_DEBUG", "1. termTextView "+ isQuestion.toString() + " definitionTextView "+holder.definitionTextView.visibility.toString())
                 flipCard(holder.view.context, holder.termTextView, holder.definitionTextView)
             } else {
-                Log.d("FRV_DEBUG", "2. termTextView "+ isQuestion.toString() + " definitionTextView "+holder.definitionTextView.visibility.toString())
                 flipCard(holder.view.context, holder.definitionTextView, holder.termTextView)
             }
         }
+
+
     }
 
     override fun getItemCount() = flashCards.size
 
-    class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+     class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+
         val termTextView = itemView.findViewById<TextView>(R.id.termLearnFishTextView)
         val view = itemView
         val definitionTextView = itemView.findViewById<TextView>(R.id.definitionLearnFishTextView)
         val flashCardLayout = itemView.findViewById<ConstraintLayout>(R.id.learnCardConstraintLayout)
     }
 
-//    fun flipCard(view: View)
-//    {
-//        val scale = view.context.resources.displayMetrics.density
-//        flip_in = AnimatorInflater.loadAnimator(view.context,R.animator.flip_in) as AnimatorSet
-//        flip_out = AnimatorInflater.loadAnimator(view.context,R.animator.flip_out) as AnimatorSet
-//
-//
-//    }
-
     fun flipCard(context: Context, visibleView: View, inVisibleView: View) {
         try {
-            Log.d("FRV_DEBUG","visibleView PRZED: "+visibleView.visibility.toString())
             visibleView.visibility = View.VISIBLE
-            Log.d("FRV_DEBUG","visibleView PO: "+visibleView.visibility.toString())
             val scale = context.resources.displayMetrics.density
             val cameraDist = 8000 * scale
             visibleView.cameraDistance = cameraDist

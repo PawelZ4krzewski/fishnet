@@ -10,7 +10,7 @@ class AddGroupViewModel : ViewModel() {
     private val repository = FirebaseRepository()
 
     fun addCardGroup(){
-        val cardGroup = com.example.fishnet.data.cardGroupData(
+        val cardGroup = com.example.fishnet.data.CardGroupData(
             "",
             _groupDescription.value,
             "groupId",

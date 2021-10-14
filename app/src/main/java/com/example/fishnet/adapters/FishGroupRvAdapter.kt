@@ -1,9 +1,5 @@
 package com.example.fishnet.adapters
 
-import android.animation.AnimatorSet
-import android.app.ActionBar
-import android.content.ContentValues.TAG
-import android.text.Layout
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,12 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fishnet.R
-import com.example.fishnet.data.FlashCardData
-import com.example.fishnet.data.cardGroupData
+import com.example.fishnet.data.CardGroupData
 
 class FishGroupRvAdapter(private val listener: OnCardGroupItemLongClick) : RecyclerView.Adapter<FishGroupRvAdapter.MyViewHolder>() {
 
-    private val cardGroups = ArrayList<cardGroupData>()
+    private val cardGroups = ArrayList<CardGroupData>()
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -25,12 +20,11 @@ class FishGroupRvAdapter(private val listener: OnCardGroupItemLongClick) : Recyc
         return MyViewHolder(view)
     }
 
-    fun setCardGroup(list : List<cardGroupData>){
+    fun setCardGroup(list : List<CardGroupData>){
         Log.d("FGRV_DEBUG",list.toString())
         cardGroups.clear()
         cardGroups.addAll(list)
         Log.d("FGRV_DEBUG",cardGroups.size.toString())
-        notifyDataSetChanged()
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
@@ -57,7 +51,7 @@ class FishGroupRvAdapter(private val listener: OnCardGroupItemLongClick) : Recyc
     }
 
     interface OnCardGroupItemLongClick{
-        fun onCardGroupItemLongClick(cardGroup: cardGroupData, position: Int)
+        fun onCardGroupItemLongClick(cardGroup: CardGroupData, position: Int)
     }
 
 

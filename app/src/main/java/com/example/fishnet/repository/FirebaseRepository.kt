@@ -5,11 +5,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.fishnet.data.FlashCardData
 import com.example.fishnet.data.UserData
-import com.example.fishnet.data.cardGroupData
+import com.example.fishnet.data.CardGroupData
+import com.example.fishnet.data.UserCardData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.storage.FirebaseStorage
+import kotlinx.coroutines.awaitAll
 
 class FirebaseRepository {
 
@@ -77,8 +80,8 @@ class FirebaseRepository {
         return cloudResult
     }
 
-    fun getCardGroupData(list: List<String>?) :LiveData<List<cardGroupData>> {
-        val cloudResult = MutableLiveData<List<cardGroupData>>()
+    fun getCardGroupData(list: List<String>?) :LiveData<List<CardGroupData>> {
+        val cloudResult = MutableLiveData<List<CardGroupData>>()
 
         if(!list.isNullOrEmpty()) {
             cloud.collection("cardGroup")
@@ -86,7 +89,7 @@ class FirebaseRepository {
                 .get()
                 .addOnSuccessListener {
                     Log.d(REPO_DEBUG, it.toString())
-                    val cardGroup = it.toObjects(cardGroupData::class.java)
+                    val cardGroup = it.toObjects(CardGroupData::class.java)
                     Log.d(REPO_DEBUG, cardGroup.toString())
                     cloudResult.postValue(cardGroup)
                 }
@@ -107,7 +110,8 @@ class FirebaseRepository {
                 Log.d(REPO_DEBUG, it.message.toString())
             }
     }
-    fun createCardGroup(cardGroup: cardGroupData) {
+
+    fun createCardGroup(cardGroup: CardGroupData) {
         cloud.collection("cardGroup")
             .add(cardGroup)
             .addOnSuccessListener {
@@ -129,5 +133,91 @@ class FirebaseRepository {
             }.addOnFailureListener {
                 Log.d(REPO_DEBUG, it.message.toString())
             }
+    }
+
+
+    fun getCardUser(cardId: String) : MutableLiveData<UserCardData>?  {
+
+        val cuid = MutableLiveData<UserCardData>()
+
+        cloud.collection("userCard")
+                .whereEqualTo("userId",auth.currentUser?.uid!!)
+                .whereEqualTo("cardId",cardId)
+                .get()
+                .addOnSuccessListener {
+                    for(document in it){
+                        val userCard = document.toObject(UserCardData::class.java)
+                        Log.d("ADD_USER_CARD","POBIERAM USER CARD "+userCard.toString())
+                        cuid.postValue(userCard)
+                        break
+                    }
+                }
+                .addOnFailureListener {
+                    Log.d(REPO_DEBUG, it.message.toString())
+                }
+        Log.d("ADD_USER_CARD","RETURNUJE USER CARD "+cuid.toString())
+        return cuid
+    }
+
+    fun updateUserCard(cardId: String, point: Int) {
+
+        val userCardOld = getCardUser(cardId)
+        val newStatus: Int?
+
+        Log.d("ADD_USER_CARD","CARD USER "+userCardOld.toString())
+        Log.d("ADD_USER_CARD","CARD USER ID "+userCardOld?.value?.cardUserId.toString())
+
+        if(userCardOld?.value?.cardUserId != null){
+
+            if(userCardOld.value?.status!! + point < 0 || userCardOld.value?.status!! + point > 5){
+                newStatus = userCardOld.value?.status
+            }
+            else {
+                newStatus = userCardOld.value?.status!! + point
+            }
+
+            cloud.collection("userCard")
+                .document(userCardOld.value?.cardUserId!!)
+                .update("status",FieldValue.arrayUnion(newStatus))
+                .addOnSuccessListener {
+                    Log.d(REPO_DEBUG, "Zaktualizowano status")
+
+//                    cloud.collection("userCard")
+//                        .document(cardUser.value?.cardUserId!!)
+//                        .update("lastModifyDate",FieldValue.arrayUnion(
+//                            LocalDateTime.now()
+//                        ))
+//                        .addOnSuccessListener {
+//                            Log.d(REPO_DEBUG, "Zaktualizowano ostatnia date modyfikacji")
+//                        }
+//                        .addOnFailureListener {
+//                            Log.d(REPO_DEBUG, it.message.toString())
+//                        }
+                }
+                .addOnFailureListener {
+                    Log.d(REPO_DEBUG, it.message.toString())
+                }
+        }
+        else {
+            val userCard = UserCardData(
+        "",
+                auth.currentUser?.uid!!,
+                cardId,
+                if(point == 1) 2 else 1
+//                LocalDateTime.now()
+            )
+
+
+            cloud.collection("userCard")
+                .add(userCard)
+                .addOnSuccessListener {
+                    Log.d("ADD_USER_CARD","Utworzono userCard BEZ ID")
+                    it.update("cardUserId",it.id)
+                    Log.d("ADD_USER_CARD","Utworzono userCard")
+                }.addOnFailureListener {
+                    Log.d("ADD_USER_CARD", it.message.toString())
+                }
+        }
+
     }
 }

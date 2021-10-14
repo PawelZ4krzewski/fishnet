@@ -1,28 +1,26 @@
 package com.example.fishnet.fragments.learnFishes
 
-import android.animation.AnimatorSet
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSnapHelper
-import androidx.recyclerview.widget.SnapHelper
 import com.example.fishnet.adapters.FishLearnRvAdapter
+import com.example.fishnet.data.FlashCardData
 import com.example.fishnet.databinding.FragmentLearnFishesBinding
-import com.example.fishnet.fragments.listFishes.ListFishesViewModel
-import com.example.fishnet.fragments.listFishes.ListFishesViewModelFactory
 import com.yuyakaido.android.cardstackview.CardStackLayoutManager
 import com.yuyakaido.android.cardstackview.CardStackListener
 import com.yuyakaido.android.cardstackview.Direction
 import com.yuyakaido.android.cardstackview.SwipeableMethod
 
-class LearnFishesFragment : Fragment(), CardStackListener{
+class LearnFishesFragment : Fragment(), CardStackListener {
 
     private val args: LearnFishesFragmentArgs by navArgs()
     private lateinit var layoutManager: CardStackLayoutManager
@@ -64,11 +62,19 @@ class LearnFishesFragment : Fragment(), CardStackListener{
     }
 
     override fun onCardDragging(direction: Direction?, ratio: Float) {
-
     }
 
     override fun onCardSwiped(direction: Direction?) {
 
+
+        if(direction.toString() == "Left") {
+            learnFishesVM.updateUserCard(adapter.flashCards[layoutManager.getTopPosition()].cardId.toString(),-1)
+            Toast.makeText(context, "NIE UMIEM", Toast.LENGTH_SHORT).show()
+        }
+        else if(direction.toString() == "Right") {
+            learnFishesVM.updateUserCard(adapter.flashCards[layoutManager.getTopPosition()].cardId.toString(),1)
+            Toast.makeText(context, "UMIEM ", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onCardCanceled() {

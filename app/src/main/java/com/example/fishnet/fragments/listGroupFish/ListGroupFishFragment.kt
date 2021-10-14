@@ -7,12 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.fishnet.R
 import com.example.fishnet.adapters.FishGroupRvAdapter
-import com.example.fishnet.adapters.FishesRvAdapter
-import com.example.fishnet.data.cardGroupData
+import com.example.fishnet.data.CardGroupData
 import com.example.fishnet.databinding.FragmentListGroupFishBinding
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
@@ -81,7 +78,7 @@ class ListGroupFishFragment : Fragment(), FishGroupRvAdapter.OnCardGroupItemLong
         })
     }
 
-    override fun onCardGroupItemLongClick(cardGroup: cardGroupData, position: Int) {
+    override fun onCardGroupItemLongClick(cardGroup: CardGroupData, position: Int) {
         val action = ListGroupFishFragmentDirections.actionFishGroupFragmentToFishesFragment(cardGroup.groupId!!)
         findNavController().navigate(action)
     }
