@@ -68,11 +68,11 @@ class LearnFishesFragment : Fragment(), CardStackListener {
 
 
         if(direction.toString() == "Left") {
-            learnFishesVM.updateUserCard(adapter.flashCards[layoutManager.getTopPosition()].cardId.toString(),-1)
+            learnFishesVM.updateUserCard(adapter.flashCards[layoutManager.getTopPosition()-1].cardId.toString(),-1)
             Toast.makeText(context, "NIE UMIEM", Toast.LENGTH_SHORT).show()
         }
         else if(direction.toString() == "Right") {
-            learnFishesVM.updateUserCard(adapter.flashCards[layoutManager.getTopPosition()].cardId.toString(),1)
+            learnFishesVM.updateUserCard(adapter.flashCards[layoutManager.getTopPosition()-1].cardId.toString(),1)
             Toast.makeText(context, "UMIEM ", Toast.LENGTH_SHORT).show()
         }
     }

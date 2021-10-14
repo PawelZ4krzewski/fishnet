@@ -1,6 +1,7 @@
 package com.example.fishnet.fragments.learnFishes
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import com.example.fishnet.repository.FirebaseRepository

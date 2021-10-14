@@ -12,7 +12,9 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.storage.FirebaseStorage
+import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 
 class FirebaseRepository {
 
@@ -136,88 +138,86 @@ class FirebaseRepository {
     }
 
 
-    fun getCardUser(cardId: String) : MutableLiveData<UserCardData>?  {
+    fun getCardUser(cardId: String) : LiveData<List<UserCardData>>? {
 
-        val cuid = MutableLiveData<UserCardData>()
 
-        cloud.collection("userCard")
+
+        val cloudResult = MutableLiveData<List<UserCardData>>()
+            cloud.collection("userCard")
                 .whereEqualTo("userId",auth.currentUser?.uid!!)
                 .whereEqualTo("cardId",cardId)
                 .get()
                 .addOnSuccessListener {
-                    for(document in it){
-                        val userCard = document.toObject(UserCardData::class.java)
-                        Log.d("ADD_USER_CARD","POBIERAM USER CARD "+userCard.toString())
-                        cuid.postValue(userCard)
-                        break
-                    }
+                    val cardGroup = it.toObjects(UserCardData::class.java)
+                    Log.d(REPO_DEBUG, cardGroup.toString())
+                    Log.d("ADD_USER_CARD","POBIERAM USER CARD "+cardGroup.toString())
+                    cloudResult.postValue(cardGroup)
                 }
                 .addOnFailureListener {
                     Log.d(REPO_DEBUG, it.message.toString())
                 }
-        Log.d("ADD_USER_CARD","RETURNUJE USER CARD "+cuid.toString())
-        return cuid
+
+        Log.d("ADD_USER_CARD","RETURNUJE USER CARD "+cloudResult.toString())
+        return cloudResult
     }
+
 
     fun updateUserCard(cardId: String, point: Int) {
 
-        val userCardOld = getCardUser(cardId)
-        val newStatus: Int?
 
-        Log.d("ADD_USER_CARD","CARD USER "+userCardOld.toString())
-        Log.d("ADD_USER_CARD","CARD USER ID "+userCardOld?.value?.cardUserId.toString())
+        val cloudResult = MutableLiveData<List<UserCardData>>()
 
-        if(userCardOld?.value?.cardUserId != null){
+        var userCardOld: UserCardData
+        var newStatus: Int? = null
 
-            if(userCardOld.value?.status!! + point < 0 || userCardOld.value?.status!! + point > 5){
-                newStatus = userCardOld.value?.status
+        cloud.collection("userCard")
+            .whereEqualTo("userId", auth.currentUser?.uid!!)
+            .whereEqualTo("cardId", cardId)
+            .get()
+            .addOnSuccessListener {
+                for (document in it) {
+                    userCardOld = document.toObject(UserCardData::class.java)
+                    if (userCardOld.cardUserId != null) {
+
+                        if (userCardOld.status!! + point < 0 || userCardOld.status!! + point > 5) {
+                            newStatus = userCardOld.status
+                        } else {
+                            newStatus = userCardOld.status!! + point
+                        }
+
+                        cloud.collection("userCard")
+                            .document(userCardOld.cardUserId!!)
+                            .update("status", newStatus)
+                            .addOnSuccessListener {
+                                Log.d(REPO_DEBUG, "Zaktualizowano status")
+                            }
+                            .addOnFailureListener {
+                                Log.d(REPO_DEBUG, it.message.toString())
+                            }
+                    }
+                }
+                if (it.isEmpty) {
+                    val userCard = UserCardData(
+                        "",
+                        auth.currentUser?.uid!!,
+                        cardId,
+                        if (point == 1) 2 else 1
+                    )
+
+
+                    cloud.collection("userCard")
+                        .add(userCard)
+                        .addOnSuccessListener {
+                            Log.d("ADD_USER_CARD", "Utworzono userCard BEZ ID")
+                            it.update("cardUserId", it.id)
+                            Log.d("ADD_USER_CARD", "Utworzono userCard")
+                        }.addOnFailureListener {
+                            Log.d("ADD_USER_CARD", it.message.toString())
+                        }
+                }
             }
-            else {
-                newStatus = userCardOld.value?.status!! + point
+            .addOnFailureListener {
+                Log.d(REPO_DEBUG, it.message.toString())
             }
-
-            cloud.collection("userCard")
-                .document(userCardOld.value?.cardUserId!!)
-                .update("status",FieldValue.arrayUnion(newStatus))
-                .addOnSuccessListener {
-                    Log.d(REPO_DEBUG, "Zaktualizowano status")
-
-//                    cloud.collection("userCard")
-//                        .document(cardUser.value?.cardUserId!!)
-//                        .update("lastModifyDate",FieldValue.arrayUnion(
-//                            LocalDateTime.now()
-//                        ))
-//                        .addOnSuccessListener {
-//                            Log.d(REPO_DEBUG, "Zaktualizowano ostatnia date modyfikacji")
-//                        }
-//                        .addOnFailureListener {
-//                            Log.d(REPO_DEBUG, it.message.toString())
-//                        }
-                }
-                .addOnFailureListener {
-                    Log.d(REPO_DEBUG, it.message.toString())
-                }
-        }
-        else {
-            val userCard = UserCardData(
-        "",
-                auth.currentUser?.uid!!,
-                cardId,
-                if(point == 1) 2 else 1
-//                LocalDateTime.now()
-            )
-
-
-            cloud.collection("userCard")
-                .add(userCard)
-                .addOnSuccessListener {
-                    Log.d("ADD_USER_CARD","Utworzono userCard BEZ ID")
-                    it.update("cardUserId",it.id)
-                    Log.d("ADD_USER_CARD","Utworzono userCard")
-                }.addOnFailureListener {
-                    Log.d("ADD_USER_CARD", it.message.toString())
-                }
-        }
-
     }
 }
