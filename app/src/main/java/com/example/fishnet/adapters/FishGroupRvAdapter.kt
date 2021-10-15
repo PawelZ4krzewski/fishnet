@@ -24,6 +24,7 @@ class FishGroupRvAdapter(private val listener: OnCardGroupItemLongClick) : Recyc
         Log.d("FGRV_DEBUG",list.toString())
         cardGroups.clear()
         cardGroups.addAll(list)
+        notifyDataSetChanged()
         Log.d("FGRV_DEBUG",cardGroups.size.toString())
     }
 
@@ -39,9 +40,8 @@ class FishGroupRvAdapter(private val listener: OnCardGroupItemLongClick) : Recyc
     inner class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
         init {
-            itemView.setOnLongClickListener() {
+            itemView.setOnClickListener() {
                 listener.onCardGroupItemLongClick(cardGroups[adapterPosition], adapterPosition)
-                true
             }
         }
 

@@ -10,6 +10,7 @@ import com.example.fishnet.data.UserCardData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.getField
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.async
@@ -163,9 +164,6 @@ class FirebaseRepository {
 
 
     fun updateUserCard(cardId: String, point: Int) {
-
-
-        val cloudResult = MutableLiveData<List<UserCardData>>()
 
         var userCardOld: UserCardData
         var newStatus: Int? = null
